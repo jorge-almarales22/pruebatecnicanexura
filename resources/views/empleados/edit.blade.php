@@ -102,7 +102,6 @@
                                 @endif                                
                             </label>
                         </div>
-                        
                         <div>
                             <label for="content">Descripción</label>
 						    <textarea name="descripcion" class="form-control" id="" cols="10" rows="5">{{ $empleado->descripcion }}</textarea>

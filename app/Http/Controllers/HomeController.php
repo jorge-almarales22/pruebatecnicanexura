@@ -35,7 +35,6 @@ class HomeController extends Controller
 
     public function empleado_store(Request $request)
     {
-        // return $request;
         $request->validate([
             'nombre' => 'required',
             'email' => 'required',
