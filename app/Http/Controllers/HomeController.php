@@ -29,7 +29,8 @@ class HomeController extends Controller
     {
         $areas = Area::get();
         $empleados = Empleado::get();
-        return view('home', compact('areas','empleados'));
+        $roles = Role::get();
+        return view('home', compact('areas','empleados','roles'));
     }
 
     public function empleado_store(Request $request)
@@ -40,36 +41,27 @@ class HomeController extends Controller
             'email' => 'required',
             'genero' => 'required',
             'descripcion' => 'required',
+            'roles' => 'required'
         ]);
         $empleado = new Empleado();
         $empleado->nombre = $request->nombre;
         $empleado->email = $request->email;
         $empleado->sexo = $request->genero;
-        $empleado->boletin = 1;
+        if($request->boletin != null){
+            $empleado->boletin = $request->boletin;
+        }
         $empleado->descripcion = $request->descripcion;
         $empleado->area_id = $request->area;
         $empleado->save();
-        $rol = new Role();
-        $permissions = [
-            'rol_profesional' => $request->rol_profesional,
-            'rol_gerente' => $request->rol_gerente,
-            'rol_auxiliar' => $request->rol_auxiliar,
-        ];
-        $permissions = json_encode($permissions);
-        $rol->nombre = $permissions;
-        
-        $empleado->roles()->save($rol);
+        $empleado->roles()->sync(request()->get('roles'));
         return back()->with('status', 'se guardo correctamente el empleado');
-
-        
     }
 
     public function editEmpleado(Empleado $empleado)
     {
         $areas = Area::get();
-        // $roles = $empleado->roles;
-        // return $roles;
-        return view('empleados.edit', compact('empleado', 'areas'));
+        $roles = Role::get();
+        return view('empleados.edit', compact('empleado', 'areas','roles'));
     }
 
     public function updateEmpleado(Request $request, Empleado $empleado)
@@ -79,28 +71,18 @@ class HomeController extends Controller
             'email' => 'required',
             'genero' => 'required',
             'descripcion' => 'required',
+            'roles' => 'required'
         ]);
         $empleado->nombre = $request->nombre;
         $empleado->email = $request->email;
         $empleado->sexo = $request->genero;
-        $empleado->boletin = 1;
+        if($request->boletin != null){
+            $empleado->boletin = $request->boletin;
+        }
         $empleado->descripcion = $request->descripcion;
         $empleado->area_id = $request->area;
         $empleado->save();
-        // foreach ($empleado->roles as $role) {
-        //     $role->pivot->role_id ;
-        // }
-        
-        $rol = new Role();
-        $permissions = [
-            'rol_profesional' => $request->rol_profesional,
-            'rol_gerente' => $request->rol_gerente,
-            'rol_auxiliar' => $request->rol_auxiliar,
-        ];
-        $permissions = json_encode($permissions);
-        $rol->nombre = $permissions;
-        
-        $empleado->roles()->save($rol);
+        $empleado->roles()->sync(request()->get('roles'));
         return redirect()->route('home')->with('status', 'se ha actualizado correctamente el empleado');
     }
 

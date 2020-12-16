@@ -26,7 +26,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-font"></i></span>
                                 </div>
-                                <input id="name" class="form-control @error('name') is-invalid @enderror" name="nombre" value="{{ old('name') }}" required autocomplete="name">
+                                <input id="name" class="form-control @error('name') is-invalid @enderror" name="nombre" value="{{ old('nombre') }}" required autocomplete="name">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -49,7 +49,8 @@
                             </div>
                         </div>
                         <div>
-                            <label for=" male" style="display: block; margin: 10px 0 10px 0">
+                            <p style="margin: 10px 0 0 0">Sexo</p>
+                            <label for=" male" style="display: block; margin: 3px 0 10px 0">
                                 <input type="radio" name="genero" value="male">
                                 Masculino
                             </label>
@@ -69,25 +70,32 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div>
+                            <p style="margin: 10px 0 0 0">Boletin</p>
+                            <label for=" male" style="display: block; margin: 3px 0 10px 0">
+                                <input type="radio" name="boletin" value="1">
+                                Activo
+                            </label>
+                            <label for="male" style="display: block; margin: 10px 0 10px 0">
+                                <input type="radio" name="boletin" value="0" >
+                                Inactivo
+                            </label>
+                        </div>
                         
                         <div>
                             <label for="content">Descripción</label>
-						    <textarea name="descripcion" class="form-control" id="" cols="10" rows="5"></textarea>
+						    <textarea value="{{ old('descripcion') }}" name="descripcion" class="form-control" id="" cols="10" rows="5"></textarea>
                         </div>
 
                         <div class="mt-2 mb-2">
-                            <div>
-                                <input type="checkbox" name="rol_profesional" value="activo">
-                                <label for="terms">Profesional de proyectos - Desarrollador</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="rol_gerente" value="activo">
-                                <label for="terms">Gerente estrategico</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="rol_auxiliar" value="activo">
-                                <label for="terms">Auxiliar administrativo</label>
-                            </div>
+                            @foreach($roles as $rol)
+                                <div>
+                                    <label>
+                                        {{ Form::checkbox('roles[]', $rol->id, null) }}
+                                        {{ $rol->nombre }}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Guardar" class="btn btn-dark btn-lg btn-block">
@@ -115,7 +123,7 @@
                                     <td>{{ $empleado->email }}</td>
                                     <td>{{ $empleado->sexo }}</td>
                                     <td>@if($empleado->area_id == 1) Produccion @else administrativo @endif</td>
-                                    <td>{{ $empleado->boletin }}</td>                                    
+                                    <td> @if($empleado->boletin == '1') Activo @else Inactivo @endif </td>                        
                                     <td><a href="{{ route('empleado_edit', $empleado->id) }}" class="btn btn-sm btn-warning">Modificar</a></td>                                    
                                     <td>{!! Form::open(['route' => ['empleado_delete', $empleado->id],
                                         'method'=> 'DELETE']) !!}

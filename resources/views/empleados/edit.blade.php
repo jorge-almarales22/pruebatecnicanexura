@@ -50,44 +50,52 @@
                         </div>
                         <div>
                             <label for=" male" style="display: block; margin: 10px 0 10px 0">
-                                <input type="radio" name="genero" value="male">
-                                Masculino
+                                @if($empleado->sexo == 'male')
+                                    <input type="radio" name="genero" value="male" checked>
+                                    Masculino
+                                @else
+                                    <input type="radio" name="genero" value="male">
+                                    Masculino
+                                @endif
                             </label>
                             <label for="male" style="display: block; margin: 10px 0 10px 0">
-                                <input type="radio" name="genero" value="female" >
-                                Femenino
+                                @if($empleado->sexo == 'female')
+                                   <input type="radio" name="genero" value="female" checked>
+                                    Femenino
+                                @else
+                                    <input type="radio" name="genero" value="female">
+                                    Femenino
+                                @endif
                             </label>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect01">Area</label>
                             </div>
-                            <select class="custom-select" name="area">
-                                <option selected>Elija su opcion</option>
+                            <select class="custom-select" name="area"> 
                                 @foreach ($areas as $area)
-                                <option value="{{$area->id}}">{{$area->nombre}}</option>
+                                    <option 
+                                    @if($area->id == $empleado->area_id) selected @endif 
+                                    value="{{$area->id}}">{{$area->nombre}}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                         
                         <div>
                             <label for="content">Descripción</label>
-						    <textarea placeholder="{{ $empleado->descripcion }}" name="descripcion" class="form-control" id="" cols="10" rows="5"></textarea>
+						    <textarea name="descripcion" class="form-control" id="" cols="10" rows="5">{{ $empleado->descripcion }}</textarea>
                         </div>
 
                         <div class="mt-2 mb-2">
-                            <div>
-                                <input type="checkbox" name="rol_profesional" value="activo">
-                                <label for="terms">Profesional de proyectos - Desarrollador</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="rol_gerente" value="activo">
-                                <label for="terms">Gerente estrategico</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="rol_auxiliar" value="activo">
-                                <label for="terms">Auxiliar administrativo</label>
-                            </div>
+                            @foreach($roles as $rol)
+                                <div>
+                                    <label>
+                                        {{ Form::checkbox('roles[]', $rol->id, null) }}
+                                        {{ $rol->nombre }}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Guardar" class="btn btn-dark btn-lg btn-block">
