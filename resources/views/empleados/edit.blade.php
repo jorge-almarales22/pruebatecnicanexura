@@ -81,6 +81,27 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div>
+                            <p style="margin: 10px 0 0 0">Boletin</p>
+                            <label for=" male" style="display: block; margin: 3px 0 10px 0">
+                                @if($empleado->boletin == '1')
+                                <input checked type="radio" name="boletin" value="1">
+                                Activo
+                                @else
+                                <input type="radio" name="boletin" value="1">
+                                Activo
+                                @endif
+                            </label>
+                            <label for="male" style="display: block; margin: 10px 0 10px 0">
+                                @if($empleado->boletin == '0')
+                                <input checked type="radio" name="boletin" value="1">
+                                Inactivo
+                                @else
+                                <input type="radio" name="boletin" value="0" >
+                                Inactivo
+                                @endif                                
+                            </label>
+                        </div>
                         
                         <div>
                             <label for="content">Descripción</label>
